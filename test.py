@@ -1,14 +1,10 @@
 import pygame
 from pygame import VIDEORESIZE, RESIZABLE
 
-if __name__ == '__main__':
-    pygame.init()
-    pygame.display.set_caption('Движущийся круг')
 
-    width, height = 800, 400
+def klaviatyra_minigame(width, height):
     screen = pygame.display.set_mode((width, height), RESIZABLE)
     mask = pygame.Surface((width, height), pygame.SRCALPHA)
-
     running = True
     x, y = width // 2, height // 2
     v = 100
@@ -19,8 +15,6 @@ if __name__ == '__main__':
     image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
     image2 = pygame.image.load('1.png')
     image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
-    image3 = pygame.image.load('1.png')
-    image3 = pygame.transform.smoothscale(image3, (int(width * 3.2), height))
 
     xm, ym = 0, 0
     x1, x2, y1, y2, fire = False, False, False, False, False
@@ -39,8 +33,6 @@ if __name__ == '__main__':
                 image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
                 image2 = pygame.image.load('1.png')
                 image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
-                image3 = pygame.image.load('1.png')
-                image3 = pygame.transform.smoothscale(image3, (int(width * 3.2), height))
 
                 image_width = image.get_width()
                 x3, x4 = 0, image_width
@@ -67,20 +59,38 @@ if __name__ == '__main__':
             y += 50
         if y2 and image.get_rect(center=(x, y))[1] + image.get_rect(center=(x, y))[3] > height:
             y -= 50
-        print(x, image2.get_rect(center=(x + image.get_rect()[2], y))[0])
+
         if image.get_rect(center=(x - image.get_rect()[2], y))[0] >= 0:
-            print(1)
             x -= image.get_rect()[2]
 
-        if image.get_rect(center=(x + image.get_rect()[2], y))[0] <= width:
-            print(2)
+        if image.get_rect(center=(x, y))[0] + image.get_rect(center=(x, y))[2] <= width:
             x += image.get_rect()[2]
 
         screen.blit(image, image.get_rect(center=(x, y)))
         screen.blit(image2, image2.get_rect(center=(x - image.get_rect()[2], y)))
-        screen.blit(image3, image3.get_rect(center=(x + image.get_rect()[2], y)))
+
+        screen.blit(mask, (0, 0), special_flags=pygame.BLEND_MULT)
 
         clock.tick(fps)
+        pygame.display.flip()
+
+
+if __name__ == '__main__':
+    pygame.init()
+    pygame.display.set_caption('Движущийся круг')
+
+    width, height = 800, 400
+    screen = pygame.display.set_mode((width, height), RESIZABLE)
+    mask = pygame.Surface((width, height), pygame.SRCALPHA)
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        klaviatyra_minigame(width, height)
+
         pygame.display.flip()
 
     pygame.quit()
