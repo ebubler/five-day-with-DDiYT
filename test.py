@@ -7,14 +7,16 @@ def klaviatyra_minigame(width, height):
     mask = pygame.Surface((width, height), pygame.SRCALPHA)
     running = True
     x, y = width // 2, height // 2
-    v = 100
     fps = 30
     clock = pygame.time.Clock()
-
-    image = pygame.image.load('1.png')
+    file_image = 'pxArt (3).png'
+    image = pygame.image.load(file_image)
     image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
-    image2 = pygame.image.load('1.png')
+    image2 = pygame.image.load(file_image)
     image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
+    im = 12
+    pos_anim = 0
+    anim = True
 
     xm, ym = 0, 0
     x1, x2, y1, y2, fire = False, False, False, False, False
@@ -29,9 +31,9 @@ def klaviatyra_minigame(width, height):
                 mask = pygame.Surface((width, height), pygame.SRCALPHA)
                 screen = pygame.display.set_mode((width, height), RESIZABLE)
 
-                image = pygame.image.load('1.png')
+                image = pygame.image.load(file_image)
                 image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
-                image2 = pygame.image.load('1.png')
+                image2 = pygame.image.load(file_image)
                 image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
 
                 image_width = image.get_width()
@@ -69,8 +71,17 @@ def klaviatyra_minigame(width, height):
         screen.blit(image, image.get_rect(center=(x, y)))
         screen.blit(image2, image2.get_rect(center=(x - image.get_rect()[2], y)))
 
-        screen.blit(mask, (0, 0), special_flags=pygame.BLEND_MULT)
-
+        if anim:
+            if pos_anim > 83:
+                pos_anim = 0
+            image_anim = pygame.image.load(
+                f'1/Untitled_{"".join(['0' for i in range(6 - len(str(int(pos_anim))))])}{int(pos_anim)}.png'
+            )
+            image_anim = pygame.transform.smoothscale(image_anim, (width // 4, height // 1.5))
+        screen.blit(image_anim, image_anim.get_rect(center=(x - 100, y)))
+        screen.blit(image_anim, image_anim.get_rect(center=(x - 100 - image.get_rect()[2], y)))
+        #screen.blit(mask, (0, 0), special_flags=pygame.BLEND_MULT)
+        pos_anim += im / fps
         clock.tick(fps)
         pygame.display.flip()
 
