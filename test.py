@@ -14,6 +14,8 @@ def klaviatyra_minigame(width, height):
     image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
     image2 = pygame.image.load(file_image)
     image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
+    timyr = pygame.image.load('Тимур.png')
+    timyr = pygame.transform.smoothscale(timyr, (width // 2, height))
     im = 12
     pos_anim = 0
     anim = True
@@ -35,6 +37,9 @@ def klaviatyra_minigame(width, height):
                 image = pygame.transform.smoothscale(image, (int(width * 3.2), height))
                 image2 = pygame.image.load(file_image)
                 image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
+
+                timyr = pygame.image.load('Тимур.png')
+                timyr = pygame.transform.smoothscale(timyr, (width // 2, height))
 
                 image_width = image.get_width()
                 x3, x4 = 0, image_width
@@ -80,7 +85,9 @@ def klaviatyra_minigame(width, height):
             image_anim = pygame.transform.smoothscale(image_anim, (width // 4, height // 1.5))
         screen.blit(image_anim, image_anim.get_rect(center=(x - 100, y)))
         screen.blit(image_anim, image_anim.get_rect(center=(x - 100 - image.get_rect()[2], y)))
-        #screen.blit(mask, (0, 0), special_flags=pygame.BLEND_MULT)
+        screen.blit(timyr, timyr.get_rect(center=(x - image.get_rect()[2] - 1000, y)))
+        screen.blit(timyr, timyr.get_rect(center=(x - 1000, y)))
+        screen.blit(mask, (0, 0), special_flags=pygame.BLEND_MULT)
         pos_anim += im / fps
         clock.tick(fps)
         pygame.display.flip()
@@ -95,13 +102,6 @@ if __name__ == '__main__':
     mask = pygame.Surface((width, height), pygame.SRCALPHA)
     running = True
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        klaviatyra_minigame(width, height)
-
-        pygame.display.flip()
+    klaviatyra_minigame(width, height)
 
     pygame.quit()
