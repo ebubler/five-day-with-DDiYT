@@ -136,10 +136,6 @@ def move_entity():
 
 
 
-
-
-
-
 # Основной игровой цикл
 main_menu_button = Button(screen, 300, 300, 200, 100, inactiveColour=(30, 30, 30), text='Камеры', onClick=lambda: change_camera(0))
 create_camera_buttons()
