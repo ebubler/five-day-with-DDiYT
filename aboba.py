@@ -4,7 +4,7 @@ from pygame_widgets.button import Button
 import random
 import time
 
-# Конфигурация маршрутов
+# Я плакал
 camera_routes = {
     1: [2, 3],
     2: [1, 4, 8],
