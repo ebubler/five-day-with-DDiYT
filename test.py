@@ -39,7 +39,7 @@ def klaviatyra_minigame(width, height):
                 image2 = pygame.transform.smoothscale(image2, (int(width * 3.2), height))
 
                 timyr = pygame.image.load('Тимур.png')
-                timyr = pygame.transform.smoothscale(timyr, (width // 2, height))
+                timyr = pygame.transform.smoothscale(timyr, (width // 1.5, height))
 
                 image_width = image.get_width()
                 x3, x4 = 0, image_width

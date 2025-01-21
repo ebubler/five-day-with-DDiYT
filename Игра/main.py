@@ -34,19 +34,25 @@ class Main:
 
         clock = pygame.time.Clock()
 
-        backgrount = pygame.image.load('data/image/game/backbrount.jpg')
+        backgrount = pygame.image.load('data/image/game/backbrount.png')
+        backgrount = pygame.transform.smoothscale(backgrount, (int(self.width * 1.5), self.height))
+
+        delta_x = 0
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/song/menu/Гоша_меню.mp3')
 
         pygame.mixer.music.play()
         pygame.mixer.music.set_pos(1)
+        mouse_pos = (228, 228)
 
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.MOUSEMOTION:
+                    mouse_pos = event.pos
                 if event.type == VIDEORESIZE:
                     width, height = event.size
                     if height < 500:
@@ -58,12 +64,23 @@ class Main:
                     game.setSize((width, height))
                     screen = pygame.display.set_mode((width, height), RESIZABLE)
 
-            screen.fill((0, 0, 0))
+                    backgrount = pygame.image.load('data/image/game/backbrount.png')
+                    backgrount = pygame.transform.smoothscale(backgrount, (int(self.width * 1.5), self.height))
+                    delta_x -= backgrount.get_rect()[-2] // 2
 
+            if int(self.width * 0.1) >= mouse_pos[0] > 0 != delta_x:
+                delta_x += int(self.width * 0.05)
+            if (self.width - int(self.width * 0.1) <= mouse_pos[0] < self.width and
+                    backgrount.get_rect()[-2] + delta_x != self.width):
+                delta_x -= int(self.width * 0.05)
+
+            screen.fill((0, 0, 0))
 
             if not pygame.mixer.music.get_busy():
                 print('включение трека')
                 pygame.mixer.music.play()
+            
+            screen.blit(backgrount, (delta_x, 0, self.width, self.height))
 
             pygame.display.flip()
             clock.tick(fps)
