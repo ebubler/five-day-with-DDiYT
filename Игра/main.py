@@ -1,6 +1,7 @@
 import pygame
 from pygame import VIDEORESIZE, RESIZABLE
 import json
+from datetime import datetime
 
 
 class Main:
@@ -28,6 +29,8 @@ class Main:
         pygame.display.set_caption("День " + game_level)
         fps = 30
         win = False
+
+        start_time = datetime.now().time()
 
         clock = pygame.time.Clock()
 
@@ -68,13 +71,14 @@ class Main:
         fps = 30
 
         game_level = self.load_config()['settings']['game']
+        text_file = 'data/image/menu/minecraft.ttf'
 
         fps_gosha = 10
         pos_gosha = 0
 
-        font = pygame.font.Font(None, int(self.width * 0.25 * 0.2))
-        font1 = pygame.font.Font(None, int(self.width * 0.25 * 0.15))
-        font2 = pygame.font.Font(None, int(self.width * 0.25 * 0.12))
+        font = pygame.font.Font(text_file, int(self.width * 0.25 * 0.1))
+        font1 = pygame.font.Font(text_file, int(self.width * 0.25 * 0.1))
+        font2 = pygame.font.Font(text_file, int(self.width * 0.25 * 0.05))
         text_new_game = font.render('Новая игра', True, (255, 255, 255))
         text_cont = font1.render('Продолжить', True, (255, 255, 255))
         text_game = font2.render('День ' + game_level, True, (255, 255, 255))
@@ -108,6 +112,7 @@ class Main:
                     if event.button == 1:
                         if int(self.width * 0.1) <= event.pos[0] <= int(self.width * 0.1) + but_size[0] and int(self.height * 0.55) <= event.pos[1] <= int(self.height * 0.55) + but_size[1]:
                             running = False
+                            running1 = 1
                 if event.type == VIDEORESIZE:
                     width, height = event.size
                     if height < 500:
@@ -130,9 +135,9 @@ class Main:
                     but_new_game = pygame.image.load('data/image/menu/button.png')
                     but_new_game = pygame.transform.smoothscale(but_new_game, but_size)
 
-                    font = pygame.font.Font(None, int(self.width * 0.25 * 0.2))
-                    font1 = pygame.font.Font(None, int(self.width * 0.25 * 0.15))
-                    font2 = pygame.font.Font(None, int(self.width * 0.25 * 0.12))
+                    font = pygame.font.Font(text_file, int(self.width * 0.25 * 0.1))
+                    font1 = pygame.font.Font(text_file, int(self.width * 0.25 * 0.1))
+                    font2 = pygame.font.Font(text_file, int(self.width * 0.25 * 0.05))
                     text_new_game = font.render('Новая игра', True, (255, 255, 255))
                     text_cont = font1.render('Продолжить', True, (255, 255, 255))
                     text_game = font2.render('День ' + game_level, True, (255, 255, 255))
@@ -179,10 +184,10 @@ if __name__ == '__main__':
 
     game.setSize(size)
 
-    game.mainMenu(screen)
-    running = True
+    running = game.mainMenu(screen)
+
     while running:
         level = game.load_config()['settings']['game']
-        if level == '1':
+        if running == 1:
             win = game.mainGame(screen)
             running = game.mainMenu(screen)
