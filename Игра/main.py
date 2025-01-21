@@ -34,6 +34,8 @@ class Main:
 
         clock = pygame.time.Clock()
 
+        backgrount = pygame.image.load('data/image/game/backbrount.jpg')
+
         pygame.mixer.init()
         pygame.mixer.music.load('data/song/menu/Гоша_меню.mp3')
 
@@ -57,6 +59,7 @@ class Main:
                     screen = pygame.display.set_mode((width, height), RESIZABLE)
 
             screen.fill((0, 0, 0))
+
 
             if not pygame.mixer.music.get_busy():
                 print('включение трека')
