@@ -41,6 +41,7 @@ class Main:
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/song/menu/Гоша_меню.mp3')
+        sigma = pygame.mixer.Sound('data/song/game/nosehonk.mp3')
 
         pygame.mixer.music.play()
         pygame.mixer.music.set_pos(1)
@@ -53,6 +54,10 @@ class Main:
                     running = False
                 if event.type == pygame.MOUSEMOTION:
                     mouse_pos = event.pos
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        if int(self.height * 0.6952) <= event.pos[1] <= int(self.height * 0.708) and delta_x + int(self.width * 1.5 * 0.6986) <= event.pos[0] <= delta_x + int(self.width * 1.5 * 0.706):
+                            sigma.play()
                 if event.type == VIDEORESIZE:
                     width, height = event.size
                     if height < 500:
@@ -66,7 +71,7 @@ class Main:
 
                     backgrount = pygame.image.load('data/image/game/backbrount.png')
                     backgrount = pygame.transform.smoothscale(backgrount, (int(self.width * 1.5), self.height))
-                    delta_x -= backgrount.get_rect()[-2] // 2
+                    delta_x = 0
 
             if int(self.width * 0.1) >= mouse_pos[0] > 0 != delta_x:
                 delta_x += int(self.width * 0.05)
