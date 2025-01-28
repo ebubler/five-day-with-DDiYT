@@ -1,12 +1,25 @@
 import pygame
 from pygame import VIDEORESIZE, RESIZABLE
 import json
+import random
 import datetime
 
 
 class Main:
     def __init__(self):
         self.config_name = 'data/config.json'
+        self.camera_routes = {
+            "ВХОД 1": ["ЭТАЖ 1"],
+            "ВХОД 2": ["ЭТАЖ 1"],
+            "ЭТАЖ 1": ["ВХОД 1", "ВХОД 2", "ЭТАЖ 2"],
+            "ЭТАЖ 2": ["ЛЕСТНИЦА", "ЭТАЖ 2-1"],
+            "ЛЕСТНИЦА": ["КАБИНЕТ"],
+            "ЭТАЖ 2-1": ["ЭТАЖ 2", "ЭТАЖ 3"],
+            "ЭТАЖ 3": ["КАБИНЕТ"],
+            "КАБИНЕТ": []  # Финальная позиция
+        }
+        # Текущая камера
+        self.current_camera = "ВХОД 1"
 
     def load_config(self):
         print('загрузка конфига')
@@ -23,6 +36,27 @@ class Main:
         config = self.load_config()
         config['settings']['size'] = [size[0], size[1]]
         self.save_config(config)
+
+    def move_to_camera(self, target_camera):
+        """Перемещение на указанную камеру."""
+        if target_camera in self.camera_routes[self.current_camera]:
+            self.current_camera = target_camera
+            return f"Перешли на {target_camera}"
+        else:
+            return f"Нельзя перейти с {self.current_camera} на {target_camera}"
+
+    def random_move(self):
+        """Случайное перемещение в одну из доступных камер."""
+        routes = self.camera_routes[self.current_camera]
+        if routes:
+            self.current_camera = random.choice(routes)
+            return f"Случайно переместились на {self.current_camera}"
+        else:
+            return f"Нет доступных переходов из {self.current_camera}"
+
+    def available_routes(self):
+        """Получение списка доступных маршрутов из текущей камеры."""
+        return self.camera_routes[self.current_camera]
 
     def mainGame(self, screen):
         game_level = self.load_config()['settings']['game']
@@ -56,6 +90,8 @@ class Main:
 
         camera = 0
 
+        cam_trig = total_seconds
+
         cam = pygame.image.load('data/image/game/камеры.png')
         cam = pygame.transform.smoothscale(cam, (int(self.width * 0.219 * 1.5), int(self.height * 0.3)))
         cam1 = pygame.image.load('data/image/game/ВХОД 1.jpg')
@@ -80,6 +116,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + cam.get_width() // 3 and int(self.height * 0.2731) <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'ВХОД 1'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -89,6 +126,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() // 3 <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + (cam.get_width() // 3) * 2 and int(self.height * 0.2731) <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'ВХОД 2'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -98,6 +136,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() * 2 // 3 + 1 <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + cam.get_width() and int(self.height * 0.2731) <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'лестница'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -108,6 +147,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + cam.get_width() // 3 and int(self.height * 0.2731) + cam.get_height() // 2 <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'ЭТАЖ 1'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -117,6 +157,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() // 3 <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + (cam.get_width() // 3) * 2 and int(self.height * 0.2731) + cam.get_height() // 2 <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'ЭТАЖ 2'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -126,6 +167,7 @@ class Main:
                             if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() * 2 // 3 + 1 <= mouse_pos[0] <= delta_x + int(
                                     self.width * 0.162 * 1.5) + cam.get_width() and int(self.height * 0.2731) + cam.get_height() // 2 <= \
                                     mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.stop()
                                 sound_cam.play()
                                 camera = 'ЭТАЖ 3'
                                 cam = pygame.image.load(f'data/image/game/рабочий стол.png')
@@ -145,6 +187,7 @@ class Main:
                                 cam = pygame.transform.smoothscale(cam, (
                                 int(self.width * 0.219 * 1.5), int(self.height * 0.3)))
                                 camera = 0
+                                sound_cam.stop()
                                 sound_cam.play()
                 if event.type == VIDEORESIZE:
                     width, height = event.size
@@ -203,6 +246,11 @@ class Main:
 
             pygame.display.flip()
             clock.tick(fps)
+
+            if cam_trig == total_seconds:
+                self.random_move()
+                cam_trig -= 500
+            print(self.current_camera)
 
             total_seconds -= 5
             if total_seconds <= 0:
