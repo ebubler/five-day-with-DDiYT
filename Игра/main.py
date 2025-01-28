@@ -1,7 +1,7 @@
 import pygame
 from pygame import VIDEORESIZE, RESIZABLE
 import json
-from datetime import datetime
+import datetime
 
 
 class Main:
@@ -30,8 +30,6 @@ class Main:
         fps = 30
         win = False
 
-        start_time = datetime.now().time()
-
         clock = pygame.time.Clock()
 
         backgrount = pygame.image.load('data/image/game/backbrount.png')
@@ -43,9 +41,29 @@ class Main:
         pygame.mixer.music.load('data/song/menu/Гоша_меню.mp3')
         sigma = pygame.mixer.Sound('data/song/game/nosehonk.mp3')
 
+        text_file = 'data/image/menu/minecraft.ttf'
+
+        font = pygame.font.Font(text_file, int(self.height * 0.05))
+
         pygame.mixer.music.play()
         pygame.mixer.music.set_pos(1)
         mouse_pos = (228, 228)
+
+        start_time = datetime.datetime.strptime("12:00", "%H:%M")
+        end_time = datetime.datetime.strptime("18:00", "%H:%M")
+        duration = end_time - start_time
+        total_seconds = duration.total_seconds()
+
+        camera = 0
+
+        cam = pygame.image.load('data/image/game/камеры.png')
+        cam = pygame.transform.smoothscale(cam, (int(self.width * 0.219 * 1.5), int(self.height * 0.3)))
+        cam1 = pygame.image.load('data/image/game/ВХОД 1.jpg')
+        cam1 = pygame.transform.smoothscale(cam1, (int(self.width * 0.219 * 1.5), int(self.height * 0.3 * 0.95)))
+        back = pygame.image.load('data/image/game/назад.png')
+        back = pygame.transform.smoothscale(back, (cam.get_width() // 10, cam.get_height() // 8))
+
+        sound_cam = pygame.mixer.Sound("data/song/game/camera-video-load.mp3")
 
         running = True
         while running:
@@ -58,6 +76,76 @@ class Main:
                     if event.button == 1:
                         if int(self.height * 0.6952) <= event.pos[1] <= int(self.height * 0.708) and delta_x + int(self.width * 1.5 * 0.6986) <= event.pos[0] <= delta_x + int(self.width * 1.5 * 0.706):
                             sigma.play()
+                        if not camera:
+                            if delta_x + int(self.width * 0.162 * 1.5) <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + cam.get_width() // 3 and int(self.height * 0.2731) <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.play()
+                                camera = 'ВХОД 1'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+                            if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() // 3 <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + (cam.get_width() // 3) * 2 and int(self.height * 0.2731) <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.play()
+                                camera = 'ВХОД 2'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+                            if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() * 2 // 3 + 1 <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + cam.get_width() and int(self.height * 0.2731) <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 2:
+                                sound_cam.play()
+                                camera = 'лестница'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+
+                            if delta_x + int(self.width * 0.162 * 1.5) <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + cam.get_width() // 3 and int(self.height * 0.2731) + cam.get_height() // 2 <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.play()
+                                camera = 'ЭТАЖ 1'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+                            if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() // 3 <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + (cam.get_width() // 3) * 2 and int(self.height * 0.2731) + cam.get_height() // 2 <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.play()
+                                camera = 'ЭТАЖ 2'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+                            if delta_x + int(self.width * 0.162 * 1.5) + cam.get_width() * 2 // 3 + 1 <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + cam.get_width() and int(self.height * 0.2731) + cam.get_height() // 2 <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height():
+                                sound_cam.play()
+                                camera = 'ЭТАЖ 3'
+                                cam = pygame.image.load(f'data/image/game/рабочий стол.png')
+                                cam = pygame.transform.smoothscale(cam,
+                                                                   (int(self.width * 0.219 * 1.5),
+                                                                    int(self.height * 0.3)))
+
+                            if camera:
+                                cam1 = pygame.image.load(f'data/image/game/{camera}.jpg')
+                                cam1 = pygame.transform.smoothscale(cam1, (
+                                int(self.width * 0.219 * 1.5), int(self.height * 0.3 * 0.95)))
+                        else:
+                            if delta_x + int(self.width * 0.162 * 1.5) <= mouse_pos[0] <= delta_x + int(
+                                    self.width * 0.162 * 1.5) + cam.get_width() // 8 and int(self.height * 0.2731) <= \
+                                    mouse_pos[1] <= int(self.height * 0.2731) + cam.get_height() // 8:
+                                cam = pygame.image.load('data/image/game/камеры.png')
+                                cam = pygame.transform.smoothscale(cam, (
+                                int(self.width * 0.219 * 1.5), int(self.height * 0.3)))
+                                camera = 0
+                                sound_cam.play()
                 if event.type == VIDEORESIZE:
                     width, height = event.size
                     if height < 500:
@@ -71,24 +159,54 @@ class Main:
 
                     backgrount = pygame.image.load('data/image/game/backbrount.png')
                     backgrount = pygame.transform.smoothscale(backgrount, (int(self.width * 1.5), self.height))
-                    delta_x = 0
+                    font = pygame.font.Font(text_file, int(self.height * 0.05))
 
-            if int(self.width * 0.1) >= mouse_pos[0] > 0 != delta_x:
+                    cam = pygame.image.load('data/image/game/камеры.png')
+                    cam = pygame.transform.smoothscale(cam, (int(self.width * 0.219 * 1.5), int(self.height * 0.3)))
+                    back = pygame.image.load('data/image/game/назад.png')
+                    back = pygame.transform.smoothscale(back, (cam.get_width() // 10, cam.get_height() // 8))
+                    if camera:
+                        cam1 = pygame.image.load(f'data/image/game/{camera}.jpg')
+                        cam1 = pygame.transform.smoothscale(cam1, (
+                            int(self.width * 0.219 * 1.5), int(self.height * 0.3 * 0.95)))
+                    camera = 0
+
+            if int(self.width * 0.1) >= mouse_pos[0] > 0 >= delta_x:
                 delta_x += int(self.width * 0.05)
-            if (self.width - int(self.width * 0.1) <= mouse_pos[0] < self.width and
-                    backgrount.get_rect()[-2] + delta_x != self.width):
+            if not (0 >= delta_x):
+                delta_x = 0
+            if self.width - int(self.width * 0.1) <= mouse_pos[0] < self.width <= backgrount.get_rect()[-2] + delta_x:
                 delta_x -= int(self.width * 0.05)
+            if not (self.width <= backgrount.get_rect()[-2] + delta_x):
+                delta_x = -backgrount.get_rect()[-2] + self.width
 
             screen.fill((0, 0, 0))
+
+            current_time = end_time - datetime.timedelta(seconds=total_seconds)
+            text_time = font.render(str(current_time.time()), True, (0, 0, 0))
 
             if not pygame.mixer.music.get_busy():
                 print('включение трека')
                 pygame.mixer.music.play()
-            
+
             screen.blit(backgrount, (delta_x, 0, self.width, self.height))
+
+            screen.blit(text_time, (self.width - int(self.width * 0.17), int(self.height * 0.05), int(self.width * 0.17), int(self.height * 0.1)))
+
+            screen.blit(cam, (
+            delta_x + int(self.width * 0.162 * 1.5), int(self.height * 0.2731), cam.get_width(), cam.get_height()))
+            if camera:
+                print('камера:', camera)
+                screen.blit(cam1, (
+            delta_x + int(self.width * 0.162 * 1.5), int(self.height * 0.2731), cam1.get_width(), cam1.get_height()))
+                screen.blit(back, (delta_x + int(self.width * 0.162 * 1.5), int(self.height * 0.2731), back.get_width(), back.get_height()))
 
             pygame.display.flip()
             clock.tick(fps)
+
+            total_seconds -= 5
+            if total_seconds <= 0:
+                break
         return win
 
     def mainMenu(self, screen):
@@ -123,6 +241,7 @@ class Main:
 
         but_new_game = pygame.image.load('data/image/menu/button.png')
         but_new_game = pygame.transform.smoothscale(but_new_game, but_size)
+
         pygame.mixer.music.play()
         pygame.mixer.music.set_pos(1)
 
