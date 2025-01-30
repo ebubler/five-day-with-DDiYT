@@ -37,6 +37,9 @@ class Main:
         config['settings']['size'] = [size[0], size[1]]
         self.save_config(config)
 
+    def telegram(self):
+        screen.fill('data/image/гоша_тг/Начало.png')
+
     def move_to_camera(self, target_camera):
         """Перемещение на указанную камеру."""
         if target_camera in self.camera_routes[self.current_camera]:
@@ -346,7 +349,7 @@ class Main:
             screen.blit(backgrount, (0, 0, self.width, self.height))
 
             gosha = pygame.image.load(
-                f'data/image/menu/animate/Untitled_{'0' * (6 - len(str(int(pos_gosha)))) + str(int(pos_gosha))}.png')
+                f'data/image/menu/animate/Untitled_{"0" * (6 - len(str(int(pos_gosha)))) + str(int(pos_gosha))}.png')
             gosha = pygame.transform.smoothscale(gosha, (int(self.width * 0.8), int(self.height * 1.1)))
             screen.blit(gosha, (int(self.width * 0.25), 0, self.width, self.height))
             pos_gosha += fps_gosha / fps
