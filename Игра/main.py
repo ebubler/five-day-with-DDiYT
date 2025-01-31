@@ -98,7 +98,7 @@ class Main:
         return self.camera_routes[self.current_camera]
 
     def mainGame(self, screen):
-        self.current_camera = "ЭТАЖ 3"
+        self.current_camera = "ВХОД 1"
         self.current_camera_2 = "ВХОД 1"
         game_level = self.load_config()['settings']['game']
         pygame.display.set_caption("День " + game_level)
@@ -176,6 +176,14 @@ class Main:
 
         GOSHA = pygame.image.load(f'data/image/game/КАБИНЕТГОША.png')
         GOSHA = pygame.transform.smoothscale(GOSHA, (
+            backgrount.get_width(),
+            backgrount.get_height()))
+
+        culldown_ilya = False
+        culldown_ilya_time = 0
+
+        ILYA = pygame.image.load(f'data/image/game/КАБИНЕТИЛЬЯ.png')
+        ILYA = pygame.transform.smoothscale(ILYA, (
             backgrount.get_width(),
             backgrount.get_height()))
 
@@ -335,6 +343,11 @@ class Main:
                         backgrount.get_width(),
                         backgrount.get_height()))
 
+                    ILYA = pygame.image.load(f'data/image/game/КАБИНЕТИЛЬЯ.png')
+                    ILYA = pygame.transform.smoothscale(ILYA, (
+                        backgrount.get_width(),
+                        backgrount.get_height()))
+
             if int(self.width * 0.1) >= mouse_pos[0] > 0 >= delta_x:
                 delta_x += int(self.width * 0.05)
             if not (0 >= delta_x):
@@ -391,6 +404,13 @@ class Main:
                         screen.blit(cam2, (
                             delta_x + int(self.width * 0.162 * 1.5), int(self.height * 0.2731), cam2.get_width(),
                             cam2.get_height()))
+                    if camera.upper() in self.current_camera_2:
+                        cam3 = pygame.image.load(f'data/image/game/{self.current_camera_2.upper()}ИЛЬЯ.png')
+                        cam3 = pygame.transform.smoothscale(cam3, (
+                            int(self.width * 0.219 * 1.5), int(self.height * 0.3 * 0.95)))
+                        screen.blit(cam3, (
+                            delta_x + int(self.width * 0.162 * 1.5), int(self.height * 0.2731), cam3.get_width(),
+                            cam3.get_height()))
                 if lms_c:
                     screen.blit(lms, (
                         delta_x + int(backgrount.get_width() * 0.6679), int(self.height * 0.461), lms.get_width(),
@@ -410,8 +430,6 @@ class Main:
                     backgrount.get_height()))
                 if cam_trig >= total_seconds:
                     cam_trig -= random.choice((500 * k, 700 * k, 600 * k, 800 * k))
-                if cam_trig_2 >= total_seconds:
-                    cam_trig_2 -= random.choice((500 * k, 700 * k, 600 * k, 800 * k))
 
             elif cam_trig >= total_seconds:
                 if random.choice((True, False, False, False, False)):
@@ -425,6 +443,14 @@ class Main:
                 self.random_move()
                 cam_trig -= random.choice((500 * k, 700 * k, 600 * k, 800 * k))
                 print('Гоша тут:', self.current_camera)
+
+            if self.current_camera_2 == "КАБИНЕТ":
+                screen.blit(ILYA, (
+                    delta_x, 0, backgrount.get_width(),
+                    backgrount.get_height()))
+                if cam_trig_2 >= total_seconds:
+                    cam_trig_2 -= random.choice((500 * k, 700 * k, 600 * k, 800 * k))
+
             elif cam_trig_2 >= total_seconds:
                 self.random_move_2()
                 cam_trig_2 -= random.choice((500 * k, 700 * k, 600 * k, 800 * k))
@@ -571,7 +597,7 @@ if __name__ == '__main__':
             win = game.mainGame(screen)
             if win:
                 game.winGame(screen)
-                if level != 5:
+                if level != '5':
                     conf['settings']['game'] = str(int(level) + 1)
                     game.save_config(conf)
             running = game.mainMenu(screen)
