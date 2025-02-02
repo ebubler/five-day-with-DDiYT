@@ -99,7 +99,7 @@ class Main:
 
     def mainGame(self, screen):
         self.current_camera = "ВХОД 1"
-        self.current_camera_2 = "ВХОД 1"
+        self.current_camera_2 = "ЭТАЖ 3"
         game_level = self.load_config()['settings']['game']
         pygame.display.set_caption("День " + game_level)
         fps = 30
@@ -372,6 +372,13 @@ class Main:
                     self.current_camera = 'ЭТАЖ 1'
                 culldown_gosha = False
 
+            if culldown_ilya and pygame.time.get_ticks() - culldown_ilya_time > 1000:
+                if power:
+                    running = False
+                else:
+                    self.current_camera_2 = 'ЭТАЖ 1'
+                culldown_ilya = False
+
             screen.fill((0, 0, 0))
 
             current_time = end_time - datetime.timedelta(seconds=total_seconds)
@@ -445,6 +452,10 @@ class Main:
                 print('Гоша тут:', self.current_camera)
 
             if self.current_camera_2 == "КАБИНЕТ":
+                if not culldown_ilya:
+                    scream.play()
+                    culldown_ilya = True
+                    culldown_ilya_time = pygame.time.get_ticks()
                 screen.blit(ILYA, (
                     delta_x, 0, backgrount.get_width(),
                     backgrount.get_height()))
