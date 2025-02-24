@@ -99,7 +99,7 @@ class Main:
 
     def mainGame(self, screen):
         self.current_camera = "ВХОД 1"
-        self.current_camera_2 = "ЭТАЖ 3"
+        self.current_camera_2 = "ВХОД 1"
         game_level = self.load_config()['settings']['game']
         pygame.display.set_caption("День " + game_level)
         fps = 30
@@ -528,6 +528,12 @@ class Main:
                         if int(self.width * 0.1) <= event.pos[0] <= int(self.width * 0.1) + but_size[0] and int(self.height * 0.55) <= event.pos[1] <= int(self.height * 0.55) + but_size[1]:
                             running = False
                             running1 = 1
+                        if (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[0] <= event.pos[0] <= (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[0] + (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[2] and (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[1] <= event.pos[1] <= (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[1] + (int(self.width * 0.1), int(self.height * 0.4), but_size[0], but_size[1])[3]:
+                            conf = self.load_config()
+                            conf['settings']['game'] = "1"
+                            self.save_config(conf)
+                            running = False
+                            running1 = 1
                 if event.type == VIDEORESIZE:
                     width, height = event.size
                     if height < 500:
@@ -588,6 +594,9 @@ class Main:
             pygame.display.flip()
             clock.tick(fps)
         return running1
+
+    def mainScream(self):
+        pass
 
 
 if __name__ == '__main__':
